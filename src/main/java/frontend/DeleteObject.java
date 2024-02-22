@@ -220,7 +220,7 @@ public class DeleteObject extends javax.swing.JFrame {
                             String filePath = "categoryData.csv";
                             productManagement.getCategories().remove(category.getId());
 
-                            String dataToRemove = category.getId() + "," + category.getName();
+                            String dataToRemove = category.getId() + "␟,␟" + category.getName();
                             try {
                                 productManagement.deleteDataFromFile(dataToRemove, filePath);
                             } catch (IOException ex) {
@@ -248,7 +248,7 @@ public class DeleteObject extends javax.swing.JFrame {
                             String filePath = "subcategoryData.csv";
                             category.getComponents().remove(subcategory);
                             
-                            String dataToRemove = subcategory.getId() + "," + subcategory.getName();
+                            String dataToRemove = subcategory.getId() + "␟,␟" + subcategory.getName();
                             try {
                                 productManagement.deleteDataFromFile(dataToRemove, filePath);
                             } catch (IOException ex) {
@@ -268,7 +268,7 @@ public class DeleteObject extends javax.swing.JFrame {
                         // Delete the product from the CSV file
                         String filePath = "productData.csv";
                         subcat.getComponents().remove(product);
-                        String dataToRemove = String.format("%s,%s,%s,%s,%s", product.getId(), product.getName(),
+                        String dataToRemove = String.format("%s␟,␟%s␟,␟%s␟,␟%s␟,␟%s", product.getId(), product.getName(),
                             product.getDescription(), product.getPurchasePrice(), product.getPurchaseDate());
                         try {
                             productManagement.deleteDataFromFile(dataToRemove, filePath);

@@ -10,6 +10,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import backend.*;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -33,14 +35,28 @@ public class ProductGUI extends javax.swing.JFrame {
     
     public ProductGUI(InventoryComponent subCategory, ProductManagement mainClass, InventoryComponent cat) {
         productManagement = mainClass;
-        subcat = subCategory;
         category = cat;
+        Subcategory newSubcat = (Subcategory) subCategory;
         int i = 0;
-        for (InventoryComponent entry : subcat.getComponents()) {
-            products.add(i,entry.getName());
+//        for (InventoryComponent entry : subcat.getComponents()) {
+//            products.add(i, entry.getName());
+//            i++;
+//        }
+        List<InventoryComponent> strList = new ArrayList<>();
+        i = 0;
+
+        for (InventoryComponent entry1 : newSubcat.getComponents()){
+            strList.add(i, entry1);
             i++;
-            
         }
+        strList.sort((InventoryComponent product1, InventoryComponent product2) -> 
+                Integer.compare(Integer.parseInt(product1.getId()),Integer.parseInt(product2.getId()))
+            );
+        newSubcat.setComponents(strList);
+        for (i = 0; i < strList.size(); i++) {
+            products.add(i, strList.get(i).getName());
+        }
+        subcat = (Subcategory) newSubcat;
         initComponents();
     }
     
@@ -149,6 +165,7 @@ public class ProductGUI extends javax.swing.JFrame {
         scrollPaneItems.setFocusable(false);
         scrollPaneItems.setRequestFocusEnabled(false);
 
+        listItems.setBorder(null);
         listItems.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         listItems.setModel(this.products);
         listItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -398,6 +415,11 @@ public class ProductGUI extends javax.swing.JFrame {
 
     private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
         // TODO add your handling code here:
+        if (listItems.getSelectedIndex() == -1) {
+            new ErrorPopup("Please <b>select a product</b> to edit.").setVisible(true);
+        } else {
+            new EditProduct(subcat, productManagement, subcat.getComponents().get(listItems.getSelectedIndex())).setVisible(true);
+        }
     }//GEN-LAST:event_buttonEditActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -443,16 +465,27 @@ public class ProductGUI extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
-        ArrayList<String> strList = new ArrayList<>();
-        int j = 0;
+        int i = 0;
+        List<InventoryComponent> strList = new ArrayList<>();
 
-        for (InventoryComponent entry1 :subcat.getComponents()){
-            strList.add(j, entry1.getName());
-            j++;
+        for (InventoryComponent entry1 : subcat.getComponents()){
+            strList.add(i, entry1);
+            i++;
         }
-        String[] str1 = strList.toArray(new String[0]);
-        listItems.setListData(str1);
+        strList.sort((InventoryComponent product1, InventoryComponent product2) -> 
+                Integer.compare(Integer.parseInt(product1.getId()),Integer.parseInt(product2.getId()))
+            );
+        Subcategory newSubcat = (Subcategory) subcat;
+        newSubcat.setComponents(strList);     
+        subcat = (Subcategory) newSubcat;
+
+        ArrayList<String> strNames = new ArrayList<>();
+        for (i = 0; i < strList.size(); i++) {
+            strNames.add(strList.get(i).getName());
+        }
+        String[] str1 = strNames.toArray(new String[0]);
         
+        listItems.setListData(str1);
         textFieldProductName.setFont(textFieldProductName.getFont().deriveFont(24f));
         textFieldProductName.setText("-");
         labelId.setText("-");

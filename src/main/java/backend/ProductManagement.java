@@ -16,8 +16,10 @@ public class ProductManagement {
     private Subcategory selectedSubcategory = null;
     private Encrypt encrypt;
 
+    
     public ProductManagement() {
         this.encrypt = new Encrypt();
+        
     }
     
     public void addCat(InventoryComponent newCategory){
@@ -124,7 +126,7 @@ public class ProductManagement {
         String categoryFile = "categoryData.csv";
         String subcategoryFile = "subcategoryData.csv";
         String productFile = "productData.csv";
-        String csvSplitBy = ",";
+        String csvSplitBy = "␟,␟";
 
         // Read data from the category CSV file
         readCategoryData(categoryFile, csvSplitBy);

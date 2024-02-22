@@ -117,6 +117,7 @@ public class AddProduct extends javax.swing.JFrame {
         formattedTextFieldProductName.setCaretPosition(6);
         formattedTextFieldProductName.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         formattedTextFieldProductName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        formattedTextFieldProductName.setSelectionColor(new java.awt.Color(61, 100, 100));
         formattedTextFieldProductName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formattedTextFieldProductNameMousePressed(evt);
@@ -138,6 +139,7 @@ public class AddProduct extends javax.swing.JFrame {
         formattedTextFieldPrice.setToolTipText("");
         formattedTextFieldPrice.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         formattedTextFieldPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        formattedTextFieldPrice.setSelectionColor(new java.awt.Color(61, 100, 100));
         formattedTextFieldPrice.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formattedTextFieldPriceMousePressed(evt);
@@ -159,6 +161,7 @@ public class AddProduct extends javax.swing.JFrame {
         formattedTextFieldDate.setToolTipText("");
         formattedTextFieldDate.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         formattedTextFieldDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        formattedTextFieldDate.setSelectionColor(new java.awt.Color(61, 100, 100));
         formattedTextFieldDate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formattedTextFieldDateMousePressed(evt);
@@ -183,6 +186,7 @@ public class AddProduct extends javax.swing.JFrame {
         textAreaDescription.setText("Product Description");
         textAreaDescription.setToolTipText("");
         textAreaDescription.setWrapStyleWord(true);
+        textAreaDescription.setSelectionColor(new java.awt.Color(61, 100, 100));
         textAreaDescription.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 textAreaDescriptionMousePressed(evt);
@@ -366,7 +370,7 @@ public class AddProduct extends javax.swing.JFrame {
                         formattedTextFieldDate.getText().trim(), subcat,
                         productManagement.findMaxId(subcat.getComponents(), 6, 9));
                 String filePath = "productData.csv";
-                String newData = String.format("%s,%s,%s,%s,%s", newProduct.getId(), newProduct.getName(),
+                String newData = String.format("%s␟,␟%s␟,␟%s␟,␟%s␟,␟%s", newProduct.getId(), newProduct.getName(),
                         newProduct.getDescription(), newProduct.getPurchasePrice(), newProduct.getPurchaseDate());
                 added = true;
                 try {
@@ -375,7 +379,6 @@ public class AddProduct extends javax.swing.JFrame {
                     Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        // TODO add category and subcategory functionality goes here
         }
         if(added){
             super.dispose();

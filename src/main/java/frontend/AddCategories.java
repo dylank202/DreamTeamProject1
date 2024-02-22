@@ -147,6 +147,7 @@ public class AddCategories extends javax.swing.JFrame {
         formattedTextFieldCatName.setOpaque(true);
         formattedTextFieldCatName.setRequestFocusEnabled(false);
         formattedTextFieldCatName.setSelectedTextColor(new java.awt.Color(140, 140, 140));
+        formattedTextFieldCatName.setSelectionColor(new java.awt.Color(61, 100, 100));
         formattedTextFieldCatName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formattedTextFieldCatNameMousePressed(evt);
@@ -221,7 +222,7 @@ public class AddCategories extends javax.swing.JFrame {
                 if(!duplicate){
                     InventoryComponent newCategory = new Category(formattedTextFieldCatName.getText().trim());
                     String filePath = "categoryData.csv";
-                    String newData = String.format("%s,%s", newCategory.getId(), newCategory.getName());
+                    String newData = String.format("%s␟,␟%s", newCategory.getId(), newCategory.getName());
                     //InventoryComponent newCategory = new Category(input);
                     productManagement.addCat(newCategory);
                     added = true;
@@ -247,7 +248,7 @@ public class AddCategories extends javax.swing.JFrame {
                     Subcategory newSubcategory = Subcategory.addSubcategory(formattedTextFieldCatName.getText().trim(),
                            selectedCategory, productManagement.findMaxId(selectedCategory.getComponents(), 3, 6));
                     String filePath = "subcategoryData.csv";
-                    String newData = String.format("%s,%s", newSubcategory.getId(), newSubcategory.getName());
+                    String newData = String.format("%s␟,␟%s", newSubcategory.getId(), newSubcategory.getName());
                     productManagement.addSubCat(newSubcategory);
                     added = true;
                     try {
@@ -257,7 +258,6 @@ public class AddCategories extends javax.swing.JFrame {
                     }
                         
                 }
-            // TODO add category and subcategory functionality goes here
             }
         }
         if(added){

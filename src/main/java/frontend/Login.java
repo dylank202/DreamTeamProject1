@@ -91,8 +91,12 @@ public class Login extends javax.swing.JFrame {
         labelId.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         labelId.setText("ID");
 
+        textFieldId.setSelectionColor(new java.awt.Color(61, 100, 100));
+
         labelPassword.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         labelPassword.setText("Password");
+
+        passwordFieldPassword.setSelectionColor(new java.awt.Color(61, 100, 100));
 
         checkBoxShowPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         checkBoxShowPassword.setText("Show Password");

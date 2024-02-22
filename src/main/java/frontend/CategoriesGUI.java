@@ -8,6 +8,7 @@ import backend.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -19,6 +20,7 @@ public class CategoriesGUI extends javax.swing.JFrame {
     private ProductManagement productManagement;
     private DefaultListModel<String> cats = new DefaultListModel<>();
     private int lastCatIndex = -1;
+    private int lastSubcatIndex = -1;
     private static boolean deletePushed = false;
     
     /**
@@ -50,15 +52,17 @@ public class CategoriesGUI extends javax.swing.JFrame {
 
         labelSubcatsTitle = new javax.swing.JLabel();
         labelCatsTitle = new javax.swing.JLabel();
-        buttonAddCat = new javax.swing.JButton();
-        buttonDeleteCat = new javax.swing.JButton();
         scrollPaneCategories = new javax.swing.JScrollPane();
         listCategories = new javax.swing.JList<>();
         textFieldHomePageTitle = new javax.swing.JTextField();
         scrollPaneSubcats = new javax.swing.JScrollPane();
         listSubcats = new javax.swing.JList<>();
-        buttonDeleteSubcategory = new javax.swing.JButton();
+        buttonAddCat = new javax.swing.JButton();
+        buttonEditCat = new javax.swing.JButton();
+        buttonDeleteCat = new javax.swing.JButton();
         buttonAddSubcategory = new javax.swing.JButton();
+        buttonEditSubcat = new javax.swing.JButton();
+        buttonDeleteSubcategory = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 800, 600));
@@ -81,48 +85,11 @@ public class CategoriesGUI extends javax.swing.JFrame {
         labelCatsTitle.setFont(new java.awt.Font("Segoe UI", 0, 30)); // NOI18N
         labelCatsTitle.setText("Categories");
 
-        buttonAddCat.setBackground(new java.awt.Color(78, 110, 82));
-        buttonAddCat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        buttonAddCat.setText("Add");
-        buttonAddCat.setToolTipText("Add a new category");
-        buttonAddCat.setBorderPainted(false);
-        buttonAddCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        buttonAddCat.setFocusPainted(false);
-        buttonAddCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonAddCat.setMaximumSize(new java.awt.Dimension(98, 32));
-        buttonAddCat.setMinimumSize(new java.awt.Dimension(98, 32));
-        buttonAddCat.setOpaque(true);
-        buttonAddCat.setRequestFocusEnabled(false);
-        buttonAddCat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonAddCatActionPerformed(evt);
-            }
-        });
-
-        buttonDeleteCat.setBackground(new java.awt.Color(150, 80, 82));
-        buttonDeleteCat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        buttonDeleteCat.setText("Delete");
-        buttonDeleteCat.setToolTipText("Delete the selected category");
-        buttonDeleteCat.setBorderPainted(false);
-        buttonDeleteCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        buttonDeleteCat.setFocusPainted(false);
-        buttonDeleteCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonDeleteCat.setMaximumSize(new java.awt.Dimension(98, 32));
-        buttonDeleteCat.setMinimumSize(new java.awt.Dimension(98, 32));
-        buttonDeleteCat.setOpaque(true);
-        buttonDeleteCat.setRequestFocusEnabled(false);
-        buttonDeleteCat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonDeleteCatActionPerformed(evt);
-            }
-        });
-
         scrollPaneCategories.setBorder(null);
         scrollPaneCategories.setToolTipText("");
         scrollPaneCategories.setFocusable(false);
         scrollPaneCategories.setRequestFocusEnabled(false);
 
-        listCategories.setBorder(null);
         listCategories.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         listCategories.setModel(this.cats);
         listCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -164,28 +131,66 @@ public class CategoriesGUI extends javax.swing.JFrame {
         });
         scrollPaneSubcats.setViewportView(listSubcats);
 
-        buttonDeleteSubcategory.setBackground(new java.awt.Color(150, 80, 82));
-        buttonDeleteSubcategory.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        buttonDeleteSubcategory.setText("Delete");
-        buttonDeleteSubcategory.setToolTipText("Delete the selected subcategory");
-        buttonDeleteSubcategory.setBorderPainted(false);
-        buttonDeleteSubcategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        buttonDeleteSubcategory.setFocusPainted(false);
-        buttonDeleteSubcategory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        buttonDeleteSubcategory.setMaximumSize(new java.awt.Dimension(98, 32));
-        buttonDeleteSubcategory.setMinimumSize(new java.awt.Dimension(98, 32));
-        buttonDeleteSubcategory.setOpaque(true);
-        buttonDeleteSubcategory.setRequestFocusEnabled(false);
-        buttonDeleteSubcategory.addActionListener(new java.awt.event.ActionListener() {
+        buttonAddCat.setBackground(new java.awt.Color(78, 110, 82));
+        buttonAddCat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buttonAddCat.setText("Add");
+        buttonAddCat.setToolTipText("");
+        buttonAddCat.setBorderPainted(false);
+        buttonAddCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonAddCat.setFocusPainted(false);
+        buttonAddCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonAddCat.setMaximumSize(new java.awt.Dimension(98, 32));
+        buttonAddCat.setMinimumSize(new java.awt.Dimension(98, 32));
+        buttonAddCat.setOpaque(true);
+        buttonAddCat.setPreferredSize(new java.awt.Dimension(90, 46));
+        buttonAddCat.setRequestFocusEnabled(false);
+        buttonAddCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonDeleteSubcategoryActionPerformed(evt);
+                buttonAddCatActionPerformed(evt);
+            }
+        });
+
+        buttonEditCat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buttonEditCat.setText("Edit");
+        buttonEditCat.setToolTipText("");
+        buttonEditCat.setBorderPainted(false);
+        buttonEditCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonEditCat.setFocusPainted(false);
+        buttonEditCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonEditCat.setMaximumSize(new java.awt.Dimension(98, 32));
+        buttonEditCat.setMinimumSize(new java.awt.Dimension(98, 32));
+        buttonEditCat.setOpaque(true);
+        buttonEditCat.setPreferredSize(new java.awt.Dimension(90, 46));
+        buttonEditCat.setRequestFocusEnabled(false);
+        buttonEditCat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditCatActionPerformed(evt);
+            }
+        });
+
+        buttonDeleteCat.setBackground(new java.awt.Color(150, 80, 82));
+        buttonDeleteCat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buttonDeleteCat.setText("Delete");
+        buttonDeleteCat.setToolTipText("");
+        buttonDeleteCat.setBorderPainted(false);
+        buttonDeleteCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonDeleteCat.setFocusPainted(false);
+        buttonDeleteCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonDeleteCat.setMaximumSize(new java.awt.Dimension(98, 32));
+        buttonDeleteCat.setMinimumSize(new java.awt.Dimension(98, 32));
+        buttonDeleteCat.setOpaque(true);
+        buttonDeleteCat.setPreferredSize(new java.awt.Dimension(90, 46));
+        buttonDeleteCat.setRequestFocusEnabled(false);
+        buttonDeleteCat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteCatActionPerformed(evt);
             }
         });
 
         buttonAddSubcategory.setBackground(new java.awt.Color(78, 110, 82));
         buttonAddSubcategory.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         buttonAddSubcategory.setText("Add");
-        buttonAddSubcategory.setToolTipText("Add a new subcategory to the selected category");
+        buttonAddSubcategory.setToolTipText("");
         buttonAddSubcategory.setBorderPainted(false);
         buttonAddSubcategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buttonAddSubcategory.setFocusPainted(false);
@@ -193,10 +198,48 @@ public class CategoriesGUI extends javax.swing.JFrame {
         buttonAddSubcategory.setMaximumSize(new java.awt.Dimension(98, 32));
         buttonAddSubcategory.setMinimumSize(new java.awt.Dimension(98, 32));
         buttonAddSubcategory.setOpaque(true);
+        buttonAddSubcategory.setPreferredSize(new java.awt.Dimension(90, 46));
         buttonAddSubcategory.setRequestFocusEnabled(false);
         buttonAddSubcategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddSubcategoryActionPerformed(evt);
+            }
+        });
+
+        buttonEditSubcat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buttonEditSubcat.setText("Edit");
+        buttonEditSubcat.setToolTipText("");
+        buttonEditSubcat.setBorderPainted(false);
+        buttonEditSubcat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonEditSubcat.setFocusPainted(false);
+        buttonEditSubcat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonEditSubcat.setMaximumSize(new java.awt.Dimension(98, 32));
+        buttonEditSubcat.setMinimumSize(new java.awt.Dimension(98, 32));
+        buttonEditSubcat.setOpaque(true);
+        buttonEditSubcat.setPreferredSize(new java.awt.Dimension(90, 46));
+        buttonEditSubcat.setRequestFocusEnabled(false);
+        buttonEditSubcat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditSubcatActionPerformed(evt);
+            }
+        });
+
+        buttonDeleteSubcategory.setBackground(new java.awt.Color(150, 80, 82));
+        buttonDeleteSubcategory.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buttonDeleteSubcategory.setText("Delete");
+        buttonDeleteSubcategory.setToolTipText("");
+        buttonDeleteSubcategory.setBorderPainted(false);
+        buttonDeleteSubcategory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonDeleteSubcategory.setFocusPainted(false);
+        buttonDeleteSubcategory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonDeleteSubcategory.setMaximumSize(new java.awt.Dimension(98, 32));
+        buttonDeleteSubcategory.setMinimumSize(new java.awt.Dimension(98, 32));
+        buttonDeleteSubcategory.setOpaque(true);
+        buttonDeleteSubcategory.setPreferredSize(new java.awt.Dimension(90, 46));
+        buttonDeleteSubcategory.setRequestFocusEnabled(false);
+        buttonDeleteSubcategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteSubcategoryActionPerformed(evt);
             }
         });
 
@@ -209,17 +252,21 @@ public class CategoriesGUI extends javax.swing.JFrame {
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonAddCat, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonDeleteCat, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonAddCat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(buttonEditCat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonDeleteCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(scrollPaneCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollPaneSubcats, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonAddSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonAddSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(buttonEditSubcat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonDeleteSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonDeleteSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(65, 65, 65))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(144, 144, 144)
@@ -245,7 +292,9 @@ public class CategoriesGUI extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonDeleteSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonAddSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonDeleteCat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonDeleteCat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonEditCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonEditSubcat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buttonAddCat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
@@ -265,7 +314,7 @@ public class CategoriesGUI extends javax.swing.JFrame {
         if (listCategories.getSelectedIndex() == -1) {
             new ErrorPopup("Please <b>select a category</b> to delete.").setVisible(true);
         } else {
-            InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+            InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
             InventoryComponent selectedSubcat = null;
             new DeleteObject("Category", listCategories.getSelectedValue(), productManagement, selectedSubcat, selectedCategory).setVisible(true);
         }
@@ -276,7 +325,7 @@ public class CategoriesGUI extends javax.swing.JFrame {
         if (listSubcats.getSelectedIndex() == -1) {
             new ErrorPopup("Please <b>select a subcategory</b> to delete.").setVisible(true);
         } else {
-            InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+            InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
             InventoryComponent selectedSubcat = selectedCategory.getComponents().get(listSubcats.getSelectedIndex());
             new DeleteObject("Subcategory", listSubcats.getSelectedValue(), productManagement, selectedSubcat, selectedCategory).setVisible(true);
         }
@@ -300,7 +349,11 @@ public class CategoriesGUI extends javax.swing.JFrame {
             lastCatIndex = listCategories.getSelectedIndex();
             ArrayList<String> strList = new ArrayList<>();
             int j = 0;
-            InventoryComponent selectedCategory = (Category) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+            System.out.println(String.format("%03d", listCategories.getSelectedIndex() + 1));
+            System.out.println(productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1)));
+            InventoryComponent selectedCategory = productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
+            // (Category) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+            // + (productManagement.getCategories().size() % 10)
             for (InventoryComponent entry1 : selectedCategory.getComponents()){
                 strList.add(j, entry1.getName());
                 j++;
@@ -312,13 +365,15 @@ public class CategoriesGUI extends javax.swing.JFrame {
 
     private void listSubcatsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listSubcatsMouseClicked
         // TODO add your handling code here:
+        lastSubcatIndex = listSubcats.getSelectedIndex();
+
         if (evt.getClickCount() == 2) {
             // Double-click detected
             int index = listSubcats.locationToIndex(evt.getPoint());
             if (listSubcats.getSelectedValue() != null) {
-                InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+                InventoryComponent selectedCategory = (InventoryComponent) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
                 InventoryComponent selectedSubcat = selectedCategory.getComponents().get(listSubcats.getSelectedIndex());
-                new ProductGUI(selectedSubcat, productManagement, selectedCategory).setVisible(true);
+                new ProductGUI((Subcategory) selectedSubcat, productManagement, selectedCategory).setVisible(true);
                 super.dispose();
             }
             
@@ -327,20 +382,21 @@ public class CategoriesGUI extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
+        boolean subcatDel = false;
         if(listCategories.getSelectedIndex() != -1 && listSubcats.getSelectedIndex() != -1){
             ArrayList<String> strList = new ArrayList<>();
             int j = 0;
             InventoryComponent selectedCategory;
             if (deletePushed) {
                 if (listCategories.getSelectedIndex() == 0) {
-                    selectedCategory = (Category) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
+                    selectedCategory = (Category) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
                 }
                 else
-                    selectedCategory = (Category) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex() - 1];
+                    selectedCategory = (Category) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex()));
             }
             else
-                selectedCategory = (Category) productManagement.getCategories().values().toArray()[listCategories.getSelectedIndex()];
-            
+                selectedCategory = (Category) productManagement.getCategories().get(String.format("%03d", listCategories.getSelectedIndex() + 1));
+
             for (InventoryComponent entry1 : selectedCategory.getComponents()){
                 strList.add(j, entry1.getName());
                 j++;
@@ -349,23 +405,74 @@ public class CategoriesGUI extends javax.swing.JFrame {
             String[] empty = {};
             if (listSubcats.getLastVisibleIndex() == 0) listSubcats.setListData(empty);
             else listSubcats.setListData(str1);
+
+            if (deletePushed) subcatDel = true;
             deletePushed = false;
             
         }
-        ArrayList<String> catList = new ArrayList<>();
+        ArrayList<InventoryComponent> catList = new ArrayList<>();
         int j = 0;
 
-        for (InventoryComponent entry1 : productManagement.getCategories().values()){
-            catList.add(j, entry1.getName());
+//        for (InventoryComponent entry1 : productManagement.getCategories().values()){
+//            catList.add(j, entry1.getName());
+//            j++;
+//        }
+       
+
+        for (InventoryComponent entry1 : productManagement.getCategories().values()) {
+            catList.add(j, entry1);
             j++;
         }
-        String[] str2 = catList.toArray(new String[0]);
-        listCategories.setListData(str2);
+        catList.sort((InventoryComponent cat1, InventoryComponent cat2) -> 
+                Integer.compare(Integer.parseInt(cat1.getId()),Integer.parseInt(cat2.getId()))
+            );
+        productManagement.getCategories().clear();
+        
+        j = 0;
+        for (InventoryComponent entry1 : catList) {
+            productManagement.addCat(entry1);
+            j++;
+        }
+
+        ArrayList<String> strNames = new ArrayList<>();
+        for (j = 0; j < catList.size(); j++) {
+            strNames.add(catList.get(j).getName());
+        }
+        String[] str1 = strNames.toArray(new String[0]);
+//        String[] str2 = catList.toArray(new String[0]);
+        
+        
+        
+        listCategories.setListData(str1);
         if (!deletePushed) {
             listCategories.setSelectedIndex(lastCatIndex);
         }
+        if(listCategories.getSelectedIndex() != -1 && !subcatDel) {
+            listSubcats.setSelectedIndex(lastSubcatIndex);
+        }
+
+        subcatDel = false;
         deletePushed = false;
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void buttonEditCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditCatActionPerformed
+        // TODO add your handling code here:
+        if (listCategories.getSelectedIndex() == -1) {
+            new ErrorPopup("Please <b>select a category</b> to edit.").setVisible(true);
+        } else {
+            new EditCategories("Category", productManagement, listCategories.getSelectedIndex()).setVisible(true);
+        }
+    }//GEN-LAST:event_buttonEditCatActionPerformed
+
+    private void buttonEditSubcatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditSubcatActionPerformed
+        // TODO add your handling code here:
+        if (listSubcats.getSelectedIndex() == -1) {
+            new ErrorPopup("Please <b>select a subcategory</b> to edit.").setVisible(true);
+        } else {
+            System.out.println(listSubcats.getSelectedIndex());
+            new EditCategories("Subcategory", productManagement, listCategories.getSelectedIndex(), listSubcats.getSelectedIndex()).setVisible(true);
+        }
+    }//GEN-LAST:event_buttonEditSubcatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -390,6 +497,8 @@ public class CategoriesGUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddSubcategory;
     private javax.swing.JButton buttonDeleteCat;
     private javax.swing.JButton buttonDeleteSubcategory;
+    private javax.swing.JButton buttonEditCat;
+    private javax.swing.JButton buttonEditSubcat;
     private javax.swing.JLabel labelCatsTitle;
     private javax.swing.JLabel labelSubcatsTitle;
     private javax.swing.JList<String> listCategories;
